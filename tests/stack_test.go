@@ -7,7 +7,7 @@ import (
 )
 
 func TestStackInt(t *testing.T) {
-	var s lists.Stack[int]
+	s := lists.NewStack[int]()
 
 	// Empty checks
 	if s.Len() != 0 {

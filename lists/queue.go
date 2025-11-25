@@ -1,12 +1,23 @@
 package lists
 
-type Queue[T any] struct {
+type Queue[T any] interface {
+	Enqueue(item T)
+	Deque()
+	Peek() T
+	Len() int
+}
+
+type queue[T any] struct {
 	len  int
 	head *singlyNode[T]
 	tail *singlyNode[T]
 }
 
-func (q *Queue[T]) Enqueue(item T) {
+func NewQueue[T any]() Queue[T] {
+	return &queue[T]{}
+}
+
+func (q *queue[T]) Enqueue(item T) {
 	node := &singlyNode[T]{value: item}
 	defer func() { q.len++ }()
 
@@ -20,7 +31,7 @@ func (q *Queue[T]) Enqueue(item T) {
 	q.tail = node
 }
 
-func (q *Queue[T]) Deque() {
+func (q *queue[T]) Deque() {
 	if q.len <= 0 {
 		panic("queue is empty")
 	}
@@ -29,7 +40,7 @@ func (q *Queue[T]) Deque() {
 	q.head = q.head.next
 }
 
-func (q *Queue[T]) Peek() T {
+func (q *queue[T]) Peek() T {
 	if q.len <= 0 {
 		panic("queue is empty")
 	}
@@ -37,6 +48,6 @@ func (q *Queue[T]) Peek() T {
 	return q.head.value
 }
 
-func (q *Queue[T]) Len() int {
+func (q *queue[T]) Len() int {
 	return q.len
 }

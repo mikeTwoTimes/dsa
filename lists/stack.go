@@ -1,11 +1,22 @@
 package lists
 
-type Stack[T any] struct {
+type Stack[T any] interface {
+	Push(item T)
+	Pop()
+	Peek() T
+	Len() int
+}
+
+type stack[T any] struct {
 	len  int
 	head *singlyNode[T]
 }
 
-func (s *Stack[T]) Push(item T) {
+func NewStack[T any]() Stack[T] {
+	return &stack[T]{}
+}
+
+func (s *stack[T]) Push(item T) {
 	node := &singlyNode[T]{value: item}
 	defer func() { s.len++ }()
 
@@ -18,7 +29,7 @@ func (s *Stack[T]) Push(item T) {
 	s.head = node
 }
 
-func (s *Stack[T]) Pop() {
+func (s *stack[T]) Pop() {
 	if s.len <= 0 {
 		panic("stack is empty")
 	}
@@ -27,7 +38,7 @@ func (s *Stack[T]) Pop() {
 	s.head = s.head.next
 }
 
-func (s *Stack[T]) Peek() T {
+func (s *stack[T]) Peek() T {
 	if s.len <= 0 {
 		panic("stack is empty")
 	}
@@ -35,6 +46,6 @@ func (s *Stack[T]) Peek() T {
 	return s.head.value
 }
 
-func (s *Stack[T]) Len() int {
+func (s *stack[T]) Len() int {
 	return s.len
 }

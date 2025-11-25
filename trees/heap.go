@@ -1,7 +1,20 @@
 package trees
 
-type Heap[T ordered] struct {
+type Heap[T ordered] interface {
+	Insert(item T)
+	Pop()
+	Peek() T
+	Len() int
+	heapifyUp(idx int)
+	heapifyDown(idx int)
+}
+
+type heap[T ordered] struct {
 	data []T
+}
+
+func NewHeap[T ordered]() Heap[T] {
+	return &heap[T]{}
 }
 
 func swap[T ordered](first, second *T) {
@@ -20,12 +33,12 @@ func rightChild(idx int) int {
 	return (idx * 2) + 2
 }
 
-func (h *Heap[T]) Insert(item T) {
+func (h *heap[T]) Insert(item T) {
 	h.data = append(h.data, item)
 	h.heapifyUp(h.Len() - 1)
 }
 
-func (h *Heap[T]) Pop() {
+func (h *heap[T]) Pop() {
 	if h.Len() == 0 {
 		panic("heap is empty")
 	}
@@ -35,15 +48,15 @@ func (h *Heap[T]) Pop() {
 	h.heapifyDown(0)
 }
 
-func (h *Heap[T]) Peek() T {
+func (h *heap[T]) Peek() T {
 	return h.data[0]
 }
 
-func (h *Heap[T]) Len() int {
+func (h *heap[T]) Len() int {
 	return len(h.data)
 }
 
-func (h *Heap[T]) heapifyUp(idx int) {
+func (h *heap[T]) heapifyUp(idx int) {
 	if idx == 0 {
 		return
 	}
@@ -56,7 +69,7 @@ func (h *Heap[T]) heapifyUp(idx int) {
 	}
 }
 
-func (h *Heap[T]) heapifyDown(idx int) {
+func (h *heap[T]) heapifyDown(idx int) {
 	leftIdx := leftChild(idx)
 
 	if leftIdx >= h.Len() {

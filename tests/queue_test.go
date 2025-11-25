@@ -7,7 +7,7 @@ import (
 )
 
 func TestQueueInt(t *testing.T) {
-	var q lists.Queue[int]
+	q := lists.NewQueue[int]()
 
 	// Empty queue checks
 	if q.Len() != 0 {

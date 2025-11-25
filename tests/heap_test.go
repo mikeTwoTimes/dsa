@@ -7,7 +7,7 @@ import (
 )
 
 func TestHeapInt(t *testing.T) {
-	var h trees.Heap[int]
+	h := trees.NewHeap[int]()
 
 	if h.Len() != 0 {
 		t.Fatalf("expected empty heap")
